@@ -225,9 +225,14 @@ export default function Calendar() {
   );
 
   const loadStatus = useCallback(async () => {
-    const s = await api.get('/calendar/status');
-    setStatus(s.connected);
-    return s.connected;
+    try {
+      const s = await api.get('/calendar/status');
+      setStatus(s.connected);
+      return s.connected;
+    } catch {
+      setStatus(false);
+      return false;
+    }
   }, []);
 
   const loadEvents = useCallback(async (weekStart) => {
@@ -286,23 +291,31 @@ export default function Calendar() {
   }
 
   async function connect() {
-    const { url } = await api.get('/calendar/auth');
-    const win = window.open(url, '_blank', 'width=500,height=600');
-    const interval = setInterval(async () => {
-      try {
-        if (win?.closed) {
-          clearInterval(interval);
-          const connected = await loadStatus();
-          if (connected) loadEvents(currentWeekStart);
-        }
-      } catch {}
-    }, 500);
+    try {
+      const { url } = await api.get('/calendar/auth');
+      const win = window.open(url, '_blank', 'width=500,height=600');
+      if (!win) { setError('Le popup a été bloqué. Autorise les popups et réessaie.'); return; }
+      const interval = setInterval(async () => {
+        try {
+          if (win.closed) {
+            clearInterval(interval);
+            const connected = await loadStatus();
+            if (connected) loadEvents(currentWeekStart);
+          }
+        } catch {}
+      }, 500);
+    } catch (e) {
+      setError(e.message);
+    }
   }
 
   async function disconnect() {
-    await api.delete('/calendar/disconnect');
-    setEvents([]);
-    setStatus(false);
+    try {
+      await api.delete('/calendar/disconnect');
+    } finally {
+      setEvents([]);
+      setStatus(false);
+    }
   }
 
   const today = new Date();
