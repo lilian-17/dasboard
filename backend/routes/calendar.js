@@ -85,11 +85,24 @@ router.get('/events', async (req, res) => {
     const calendar = google.calendar({ version: 'v3', auth: oauth2Client });
     const now = new Date();
     const twoWeeksOut = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
+
+    let timeMin = now.toISOString();
+    let timeMax = twoWeeksOut.toISOString();
+
+    if (req.query.timeMin && req.query.timeMax) {
+      const parsedMin = new Date(req.query.timeMin);
+      const parsedMax = new Date(req.query.timeMax);
+      if (!isNaN(parsedMin) && !isNaN(parsedMax)) {
+        timeMin = parsedMin.toISOString();
+        timeMax = parsedMax.toISOString();
+      }
+    }
+
     const response = await calendar.events.list({
       calendarId: 'primary',
-      timeMin: now.toISOString(),
-      timeMax: twoWeeksOut.toISOString(),
-      maxResults: 20,
+      timeMin,
+      timeMax,
+      maxResults: 100,
       singleEvents: true,
       orderBy: 'startTime',
     });
