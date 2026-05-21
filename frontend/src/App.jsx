@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route, NavLink, Navigate } from 'react-router-dom';
+import { useState } from 'react';
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Today from './pages/Today';
 import Habits from './pages/Habits';
 import Expenses from './pages/Expenses';
@@ -17,17 +18,33 @@ const NAV = [
 ];
 
 export default function App() {
+  const [collapsed, setCollapsed] = useState(false);
+
   return (
     <BrowserRouter>
       <div className="layout">
-        <nav className="sidebar">
-          <div className="sidebar-logo">Dashboard</div>
+        <nav className={`sidebar${collapsed ? ' collapsed' : ''}`}>
+          <div className="sidebar-logo">
+            {!collapsed && <span>Dashboard</span>}
+            <button
+              className="nav-collapse-btn"
+              onClick={() => setCollapsed(c => !c)}
+              aria-label={collapsed ? 'Agrandir la navigation' : 'Réduire la navigation'}
+            >
+              {collapsed ? '›' : '‹'}
+            </button>
+          </div>
           <ul className="sidebar-nav">
             {NAV.map(({ to, label, icon, end }) => (
               <li key={to}>
-                <NavLink to={to} end={end} className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}>
+                <NavLink
+                  to={to}
+                  end={end}
+                  className={({ isActive }) => isActive ? 'nav-item active' : 'nav-item'}
+                  title={collapsed ? label : undefined}
+                >
                   <span className="nav-icon">{icon}</span>
-                  <span>{label}</span>
+                  {!collapsed && <span>{label}</span>}
                 </NavLink>
               </li>
             ))}
