@@ -18,7 +18,7 @@ const NAV = [
 ];
 
 export default function App() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(() => localStorage.getItem('nav-collapsed') === 'true');
 
   return (
     <BrowserRouter>
@@ -28,7 +28,11 @@ export default function App() {
             {!collapsed && <span>Dashboard</span>}
             <button
               className="nav-collapse-btn"
-              onClick={() => setCollapsed(c => !c)}
+              onClick={() => setCollapsed(c => {
+              const next = !c;
+              localStorage.setItem('nav-collapsed', String(next));
+              return next;
+            })}
               aria-label={collapsed ? 'Agrandir la navigation' : 'Réduire la navigation'}
             >
               {collapsed ? '›' : '‹'}
