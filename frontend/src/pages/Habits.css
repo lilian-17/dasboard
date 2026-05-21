@@ -1,0 +1,438 @@
+/* ── Page header ─────────────────────────────────────────── */
+.habits-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.view-toggle {
+  display: flex;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2px;
+  gap: 2px;
+}
+
+.view-btn {
+  padding: 5px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  transition: background 0.1s, color 0.1s;
+}
+
+.view-btn:hover { color: var(--text); }
+.view-btn.active { background: var(--bg-3); color: var(--text); }
+
+/* ── Summary bar ────────────────────────────────────────── */
+.habits-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 20px;
+  margin-bottom: 24px;
+}
+
+.summary-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.summary-val {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.summary-lbl {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.summary-sep {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+/* ── Add habit form ─────────────────────────────────────── */
+.add-habit-form {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 480px;
+}
+
+.type-selector {
+  display: flex;
+  background: var(--bg-3);
+  border-radius: var(--radius);
+  padding: 3px;
+  gap: 2px;
+}
+
+.type-btn {
+  flex: 1;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--text-3);
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+
+.type-btn:hover { color: var(--text); }
+.type-btn.active {
+  background: var(--bg-1);
+  color: var(--text);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-label {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.target-input { width: 70px; }
+.unit-input   { width: 90px; }
+
+.unit-display {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.color-row {
+  display: flex;
+  gap: 8px;
+}
+
+.color-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: border-color 0.1s, transform 0.1s;
+}
+
+.color-dot.selected {
+  border-color: #fff;
+  transform: scale(1.15);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ── Habit list ─────────────────────────────────────────── */
+.habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.habit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.15s;
+}
+
+.habit-card.done-today {
+  border-color: rgba(34,197,94,0.25);
+}
+
+.habit-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.habit-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.habit-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.habit-name {
+  font-weight: 500;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.streak-badge {
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.done-badge {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(34,197,94,0.1);
+  border-radius: 4px;
+  padding: 2px 7px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.habit-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Check-in controls ──────────────────────────────────── */
+.check-btn {
+  background: var(--bg-2);
+  border-color: var(--border-2);
+  color: var(--text-2);
+  white-space: nowrap;
+}
+
+.check-btn.done {
+  background: rgba(34,197,94,0.1);
+  border-color: rgba(34,197,94,0.3);
+  color: var(--green);
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.checkin-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.week-progress {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.week-progress.done { color: var(--green); font-weight: 600; }
+
+.measure-input {
+  width: 72px;
+  text-align: right;
+}
+
+.measure-unit {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+.done-chip {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+  background: rgba(34,197,94,0.1);
+  border-radius: 4px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.partial-chip {
+  font-size: 12px;
+  color: var(--text-3);
+  white-space: nowrap;
+}
+
+/* ── Week view ──────────────────────────────────────────── */
+.week-view {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.week-row {
+  display: flex;
+  gap: 6px;
+}
+
+.week-cell {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  color: var(--text-3);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  cursor: pointer;
+  min-width: 0;
+}
+
+.week-cell:hover:not(.future):not(.checked) {
+  border-color: var(--border-2);
+  color: var(--text);
+}
+
+.week-cell.today {
+  border-color: var(--border-2);
+  color: var(--text);
+}
+
+.week-cell.checked { color: #fff; }
+.week-cell.editing { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+.week-cell.future {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.week-letter {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.week-num {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.week-val {
+  font-size: 9px;
+  opacity: 0.85;
+  line-height: 1;
+}
+
+/* Frequency summary below week row */
+.week-freq-summary {
+  font-size: 12px;
+  color: var(--text-3);
+  text-align: right;
+  padding-right: 2px;
+}
+
+.week-freq-summary.done { color: var(--green); font-weight: 600; }
+
+/* Inline editor row */
+.week-edit-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 2px;
+  flex-wrap: wrap;
+}
+
+.week-edit-label {
+  font-size: 12px;
+  color: var(--text-2);
+  white-space: nowrap;
+  text-transform: capitalize;
+}
+
+.week-edit-input { width: 80px; text-align: right; }
+
+.week-edit-unit {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+/* ── Heatmap (year view) ────────────────────────────────── */
+.heatmap-wrap { overflow-x: auto; }
+
+.heatmap-body {
+  display: flex;
+  gap: 4px;
+  align-items: flex-start;
+}
+
+.heatmap-day-labels {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 9px;
+  color: var(--text-3);
+  margin-top: 18px;
+  flex-shrink: 0;
+  text-align: right;
+  width: 8px;
+}
+
+.heatmap-day-labels span {
+  height: 12px;
+  line-height: 12px;
+  display: block;
+}
+
+.heatmap-right { flex: 1; min-width: 0; }
+
+.heatmap-months {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 12px;
+  gap: 3px;
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--text-3);
+  padding-left: 2px;
+}
+
+.heatmap-months span { grid-row: 1; white-space: nowrap; }
+
+.heatmap-grid { display: flex; gap: 3px; }
+
+.heatmap-col { display: flex; flex-direction: column; gap: 3px; }
+
+.heatmap-cell {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--bg-3);
+  transition: background 0.1s;
+}
+
+.heatmap-cell.empty { background: transparent; }
+
+.heatmap-cell.today {
+  outline: 2px solid rgba(255,255,255,0.7);
+  outline-offset: 1px;
+}

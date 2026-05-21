@@ -1,0 +1,112 @@
+.header-actions { display: flex; gap: 8px; }
+
+.expense-form, .budget-form {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex-1 { flex: 1; }
+
+.month-nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.month-label {
+  font-weight: 600;
+  font-size: 15px;
+  min-width: 100px;
+  text-align: center;
+}
+
+.month-total {
+  margin-left: auto;
+  color: var(--text-2);
+}
+
+.month-total strong { color: var(--text); }
+
+.chart-card { margin-bottom: 16px; }
+
+.chart-tooltip {
+  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 12px;
+}
+
+.ct-cat { font-weight: 600; margin-bottom: 4px; }
+.ct-row { display: flex; justify-content: space-between; gap: 24px; color: var(--text-2); }
+
+.expense-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.expense-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+  padding: 0 12px 12px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.expense-table td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.expense-table tr:last-child td { border-bottom: none; }
+
+.text-muted { color: var(--text-2); }
+
+.amount { font-variant-numeric: tabular-nums; font-weight: 500; }
+
+.cat-pill {
+  display: inline-flex;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--c) 15%, transparent);
+  color: var(--c);
+}
+
+.btn-sm {
+  padding: 3px 8px;
+  font-size: 12px;
+}
+
+.budget-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.budget-row span:first-child { flex: 1; color: var(--text); }

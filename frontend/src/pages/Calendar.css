@@ -1,0 +1,90 @@
+.connect-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  max-width: 500px;
+}
+
+.connect-icon {
+  font-size: 36px;
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.connect-text {
+  flex: 1;
+}
+
+.connect-text strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.connect-text p {
+  color: var(--text-2);
+  font-size: 13px;
+}
+
+.event-group {
+  margin-bottom: 24px;
+}
+
+.event-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-3);
+  margin-bottom: 8px;
+  padding-left: 2px;
+}
+
+.events-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.event-card {
+  display: flex;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.event-bar {
+  width: 3px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.event-content {
+  padding: 14px 16px;
+  flex: 1;
+  min-width: 0;
+}
+
+.event-title {
+  font-weight: 500;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.event-time {
+  font-size: 12px;
+  color: var(--text-2);
+}
+
+.event-loc {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+.event-desc {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 6px;
+  line-height: 1.4;
+}

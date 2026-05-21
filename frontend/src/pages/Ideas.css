@@ -1,0 +1,117 @@
+.idea-form,
+.idea-edit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.big-input {
+  font-size: 15px;
+  font-weight: 500;
+  padding: 10px 14px;
+  width: 100%;
+}
+
+.idea-textarea {
+  width: 100%;
+  resize: vertical;
+  line-height: 1.6;
+  min-height: 90px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.ideas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.idea-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.idea-card:hover {
+  border-color: var(--border-2);
+  background: var(--bg-2);
+}
+
+.idea-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.idea-tag {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.idea-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+.idea-body {
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.idea-date {
+  font-size: 11px;
+  color: var(--text-3);
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.idea-del {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+
+.idea-card:hover .idea-del { opacity: 1; }
+
+.btn-sm {
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+/* reuse filter-tabs from Todos */
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.filter-tab {
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-3);
+  transition: all 0.1s;
+}
+
+.filter-tab:hover { color: var(--text); background: var(--bg-2); }
+.filter-tab.active { background: var(--accent-dim); color: var(--accent); border-color: transparent; }

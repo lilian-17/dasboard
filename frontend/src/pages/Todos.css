@@ -1,0 +1,137 @@
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.count-badge {
+  background: var(--accent-dim);
+  color: var(--accent);
+  border-radius: 20px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.todo-form {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.big-input {
+  font-size: 15px;
+  padding: 9px 14px;
+  width: 100%;
+}
+
+.filter-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 16px;
+  background: var(--bg-1);
+  padding: 4px;
+  border-radius: var(--radius);
+  width: fit-content;
+  border: 1px solid var(--border);
+}
+
+.filter-tab {
+  padding: 5px 14px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  background: transparent;
+  border: none;
+  color: var(--text-2);
+  transition: background 0.1s, color 0.1s;
+}
+
+.filter-tab:hover { color: var(--text); }
+.filter-tab.active { background: var(--bg-3); color: var(--text); }
+
+.todos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.todo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius);
+  transition: background 0.1s;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+}
+
+.todo-row:hover { background: var(--bg-2); }
+.todo-row.done { opacity: 0.5; }
+
+.todo-check {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-2);
+  background: transparent;
+  color: var(--green);
+  font-size: 12px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.1s, background 0.1s;
+}
+
+.todo-check:hover { border-color: var(--accent); }
+.todo-check.checked { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.4); }
+
+.todo-body {
+  flex: 1;
+  cursor: text;
+  min-width: 0;
+}
+
+.todo-title {
+  display: block;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.todo-row.done .todo-title { text-decoration: line-through; color: var(--text-3); }
+
+.todo-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 3px;
+}
+
+.due-date {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.due-date.overdue { color: var(--red); }
+
+.todo-del { opacity: 0; transition: opacity 0.1s; }
+.todo-row:hover .todo-del { opacity: 1; }
+
+.todo-edit-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 2px;
+}
