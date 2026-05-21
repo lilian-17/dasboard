@@ -78,19 +78,23 @@ function PhotoWidget() {
   }
 
   async function handleAdd(e) {
-    const file = e.target.files[0];
-    if (!file) return;
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
     setMenu(null);
-    const form = new FormData();
-    form.append('photo', file);
-    try {
-      const res = await fetch('/api/photos', { method: 'POST', body: form });
-      if (!res.ok) throw new Error();
-      await loadPhotos();
-      setIndex(0);
-    } catch {
-      showError("Erreur lors de l'upload");
+    let failed = 0;
+    for (const file of files) {
+      const form = new FormData();
+      form.append('photo', file);
+      try {
+        const res = await fetch('/api/photos', { method: 'POST', body: form });
+        if (!res.ok) failed++;
+      } catch {
+        failed++;
+      }
     }
+    await loadPhotos();
+    setIndex(0);
+    if (failed > 0) showError(`${failed} photo(s) n'ont pas pu être uploadées`);
     e.target.value = '';
   }
 
@@ -160,6 +164,7 @@ function PhotoWidget() {
         ref={fileInputRef}
         type="file"
         accept="image/*"
+        multiple
         style={{ display: 'none' }}
         onChange={handleAdd}
       />
