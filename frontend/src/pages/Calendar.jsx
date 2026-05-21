@@ -166,3 +166,48 @@ function WeekGrid({ weekStart, events }) {
     </div>
   );
 }
+
+function MiniMonth({ currentWeekStart, onDayClick, viewingMonth, onMonthChange }) {
+  const monthStart = startOfMonth(viewingMonth);
+  const monthEnd = endOfMonth(viewingMonth);
+  const gridStart = startOfWeek(monthStart, { weekStartsOn: 1 });
+  const gridEnd = endOfWeek(monthEnd, { weekStartsOn: 1 });
+  const days = eachDayOfInterval({ start: gridStart, end: gridEnd });
+
+  const today = new Date();
+  const weekEnd = addDays(currentWeekStart, 6);
+
+  return (
+    <div className="mini-month">
+      <div className="mini-month-header">
+        <button onClick={() => onMonthChange(-1)} aria-label="Mois précédent">‹</button>
+        <span>{format(viewingMonth, 'MMMM yyyy', { locale: fr })}</span>
+        <button onClick={() => onMonthChange(1)} aria-label="Mois suivant">›</button>
+      </div>
+      <div className="mini-month-grid">
+        {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((d, i) => (
+          <span key={i} className="mini-day-label">{d}</span>
+        ))}
+        {days.map(day => {
+          const inMonth = isSameMonth(day, viewingMonth);
+          const isToday = isSameDay(day, today);
+          const inWeek = day >= currentWeekStart && day <= weekEnd;
+          return (
+            <button
+              key={day.toISOString()}
+              className={[
+                'mini-day',
+                !inMonth ? 'out-of-month' : '',
+                inWeek ? 'in-week' : '',
+                isToday ? 'is-today' : '',
+              ].filter(Boolean).join(' ')}
+              onClick={() => onDayClick(day)}
+            >
+              {format(day, 'd')}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
