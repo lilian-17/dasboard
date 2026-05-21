@@ -182,7 +182,6 @@ export default function Today() {
   const [events, setEvents] = useState([]);
   const [calStatus, setCalStatus] = useState(null);
   const [calError, setCalError] = useState(null);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const load = useCallback(async () => {
     const [todoData, habitData, allLogs] = await Promise.all([
@@ -440,17 +439,8 @@ const SHORTCUTS = [
       </div>
 
       {/* Shortcuts sidebar */}
-      <aside className={`shortcuts-panel${sidebarCollapsed ? ' collapsed' : ''}`}>
-        <div className="shortcuts-header">
-          {!sidebarCollapsed && <p className="shortcuts-title">Raccourcis</p>}
-          <button
-            className="sidebar-toggle"
-            onClick={() => setSidebarCollapsed(c => !c)}
-            aria-label={sidebarCollapsed ? 'Agrandir' : 'Réduire'}
-          >
-            {sidebarCollapsed ? '›' : '‹'}
-          </button>
-        </div>
+      <aside className="shortcuts-panel">
+        <p className="shortcuts-title">Raccourcis</p>
         <div className="shortcuts-list">
           {SHORTCUTS.map(({ label, url, icon, color }) => (
             <a
@@ -459,10 +449,9 @@ const SHORTCUTS = [
               target="_blank"
               rel="noopener noreferrer"
               className="shortcut-item"
-              title={sidebarCollapsed ? label : undefined}
             >
               <span className="shortcut-icon" style={{ color }}>{icon}</span>
-              {!sidebarCollapsed && <span className="shortcut-label">{label}</span>}
+              <span className="shortcut-label">{label}</span>
             </a>
           ))}
         </div>
