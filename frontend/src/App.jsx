@@ -22,7 +22,7 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="layout">
+      <div className={`layout${collapsed ? ' nav-collapsed' : ''}`}>
         <nav className={`sidebar${collapsed ? ' collapsed' : ''}`}>
           <div className="sidebar-logo">
             {!collapsed && <span>Dashboard</span>}

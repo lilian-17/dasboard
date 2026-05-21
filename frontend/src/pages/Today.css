@@ -10,12 +10,21 @@
   min-width: 0;
 }
 
+.nav-collapsed .today-page {
+  flex: none;
+}
+
 /* Shortcuts sidebar */
 .shortcuts-panel {
   width: 140px;
   flex-shrink: 0;
   position: sticky;
   top: 0;
+}
+
+.nav-collapsed .shortcuts-panel {
+  flex: 1;
+  width: auto;
 }
 
 .shortcuts-title {
