@@ -51,3 +51,117 @@ function getEventPosition(event) {
     height: (clampedEnd - clampedStart) / TOTAL_HOURS * 100,
   };
 }
+
+function EventBlock({ event }) {
+  const pos = getEventPosition(event);
+  if (!pos) return null;
+  return (
+    <div
+      className="event-block"
+      style={{ top: `${pos.top}%`, height: `${pos.height}%` }}
+      title={event.summary || '(Sans titre)'}
+    >
+      <div className="event-block-title">{event.summary || '(Sans titre)'}</div>
+      <div className="event-block-time">{formatEventTime(event)}</div>
+    </div>
+  );
+}
+
+function WeekGrid({ weekStart, events }) {
+  const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
+  const today = new Date();
+  const hours = Array.from({ length: TOTAL_HOURS }, (_, i) => HOUR_START + i);
+
+  const allDayEvents = events.filter(ev => !ev.start?.dateTime);
+  const timedEvents = events.filter(ev => ev.start?.dateTime);
+
+  const eventsByDay = days.map(day =>
+    timedEvents.filter(ev => isSameDay(parseISO(ev.start.dateTime), day))
+  );
+
+  const allDayByDay = days.map(day =>
+    allDayEvents.filter(ev => {
+      const start = parseISO(ev.start.date + 'T00:00:00');
+      const end = parseISO(ev.end.date + 'T00:00:00');
+      return day >= start && day < end;
+    })
+  );
+
+  const nowHour = getHours(today) + getMinutes(today) / 60;
+  const nowPct = (nowHour - HOUR_START) / TOTAL_HOURS * 100;
+  const isCurrentWeek = days.some(d => isSameDay(d, today));
+
+  const hasAllDay = allDayEvents.length > 0;
+
+  return (
+    <div className="week-grid">
+      <div className="week-header">
+        <div className="week-time-gutter" />
+        {days.map((day, i) => (
+          <div
+            key={i}
+            className={[
+              'week-day-header',
+              isSameDay(day, today) ? 'today' : '',
+              i >= 5 ? 'weekend' : '',
+            ].filter(Boolean).join(' ')}
+          >
+            <span className="week-day-name">
+              {format(day, 'EEE', { locale: fr })}
+            </span>
+            <span className={`week-day-num${isSameDay(day, today) ? ' today-circle' : ''}`}>
+              {format(day, 'd')}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {hasAllDay && (
+        <div className="week-allday-row">
+          <div className="week-time-gutter">
+            <span className="allday-label">jour</span>
+          </div>
+          {days.map((day, i) => (
+            <div key={i} className={`week-allday-cell${i >= 5 ? ' weekend' : ''}`}>
+              {allDayByDay[i].map(ev => (
+                <div key={ev.id} className="allday-event">
+                  {ev.summary || '(Sans titre)'}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+      )}
+
+      <div className="week-body">
+        <div className="week-time-col">
+          {hours.map(h => (
+            <div key={h} className="week-hour-cell">
+              <span className="week-hour-label">{h}h</span>
+            </div>
+          ))}
+        </div>
+        {days.map((day, i) => (
+          <div
+            key={i}
+            className={[
+              'week-day-col',
+              isSameDay(day, today) ? 'today' : '',
+              i >= 5 ? 'weekend' : '',
+            ].filter(Boolean).join(' ')}
+          >
+            {hours.map(h => (
+              <div key={h} className="week-hour-slot" />
+            ))}
+            {eventsByDay[i].map(ev => (
+              <EventBlock key={ev.id} event={ev} />
+            ))}
+            {isCurrentWeek && isSameDay(day, today) && nowPct >= 0 && nowPct <= 100 && (
+              <div className="now-line" style={{ top: `${nowPct}%` }} />
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
