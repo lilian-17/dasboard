@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { api } from '../lib/api';
 import {
   format, parseISO, isSameDay, isSameMonth,
@@ -224,6 +224,14 @@ export default function Calendar() {
     () => startOfMonth(new Date())
   );
 
+  const statusRef = useRef(null);
+  useEffect(() => { statusRef.current = status; }, [status]);
+
+  const connectIntervalRef = useRef(null);
+  useEffect(() => {
+    return () => { if (connectIntervalRef.current) clearInterval(connectIntervalRef.current); };
+  }, []);
+
   const loadStatus = useCallback(async () => {
     try {
       const s = await api.get('/calendar/status');
@@ -257,9 +265,9 @@ export default function Calendar() {
     loadStatus().then(connected => { if (connected) loadEvents(currentWeekStart); });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Reload when week changes (status is already true at this point)
+  // Reload when week changes
   useEffect(() => {
-    if (status === true) loadEvents(currentWeekStart);
+    if (statusRef.current === true) loadEvents(currentWeekStart);
   }, [currentWeekStart]); // eslint-disable-line react-hooks/exhaustive-deps
 
   function handleDayClick(day) {
@@ -295,10 +303,12 @@ export default function Calendar() {
       const { url } = await api.get('/calendar/auth');
       const win = window.open(url, '_blank', 'width=500,height=600');
       if (!win) { setError('Le popup a été bloqué. Autorise les popups et réessaie.'); return; }
-      const interval = setInterval(async () => {
+      if (connectIntervalRef.current) clearInterval(connectIntervalRef.current);
+      connectIntervalRef.current = setInterval(async () => {
         try {
           if (win.closed) {
-            clearInterval(interval);
+            clearInterval(connectIntervalRef.current);
+            connectIntervalRef.current = null;
             const connected = await loadStatus();
             if (connected) loadEvents(currentWeekStart);
           }
