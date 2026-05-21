@@ -41,7 +41,10 @@ function getEventPosition(event) {
   }
 
   const clampedStart = Math.max(HOUR_START, Math.min(HOUR_END, startHour));
-  const clampedEnd = Math.max(clampedStart + 0.25, Math.min(HOUR_END, endHour));
+  if (clampedStart >= HOUR_END) return null;
+
+  let clampedEnd = Math.max(clampedStart + 0.25, Math.min(HOUR_END, endHour));
+  clampedEnd = Math.min(HOUR_END, clampedEnd);
 
   return {
     top: (clampedStart - HOUR_START) / TOTAL_HOURS * 100,
