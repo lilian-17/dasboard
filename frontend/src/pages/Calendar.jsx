@@ -81,6 +81,7 @@ function WeekGrid({ weekStart, events }) {
 
   const allDayByDay = days.map(day =>
     allDayEvents.filter(ev => {
+      if (!ev.start?.date || !ev.end?.date) return false;
       const start = parseISO(ev.start.date + 'T00:00:00');
       const end = parseISO(ev.end.date + 'T00:00:00');
       return day >= start && day < end;
@@ -99,7 +100,7 @@ function WeekGrid({ weekStart, events }) {
         <div className="week-time-gutter" />
         {days.map((day, i) => (
           <div
-            key={i}
+            key={format(day, 'yyyy-MM-dd')}
             className={[
               'week-day-header',
               isSameDay(day, today) ? 'today' : '',
@@ -122,7 +123,7 @@ function WeekGrid({ weekStart, events }) {
             <span className="allday-label">jour</span>
           </div>
           {days.map((day, i) => (
-            <div key={i} className={`week-allday-cell${i >= 5 ? ' weekend' : ''}`}>
+            <div key={format(day, 'yyyy-MM-dd')} className={`week-allday-cell${i >= 5 ? ' weekend' : ''}`}>
               {allDayByDay[i].map(ev => (
                 <div key={ev.id} className="allday-event">
                   {ev.summary || '(Sans titre)'}
@@ -143,7 +144,7 @@ function WeekGrid({ weekStart, events }) {
         </div>
         {days.map((day, i) => (
           <div
-            key={i}
+            key={format(day, 'yyyy-MM-dd')}
             className={[
               'week-day-col',
               isSameDay(day, today) ? 'today' : '',
