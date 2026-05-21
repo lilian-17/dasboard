@@ -1,7 +1,10 @@
 const express = require('express');
 const { google } = require('googleapis');
+const crypto = require('crypto');
 const db = require('../db');
 const router = express.Router();
+
+let pendingState = null;
 
 function getOAuth2Client() {
   return new google.auth.OAuth2(
@@ -28,23 +31,30 @@ function saveTokens(tokens) {
 
 router.get('/auth', (req, res) => {
   const oauth2Client = getOAuth2Client();
+  pendingState = crypto.randomBytes(16).toString('hex');
   const url = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: ['https://www.googleapis.com/auth/calendar.readonly'],
     prompt: 'consent',
+    state: pendingState,
   });
   res.json({ url });
 });
 
 router.get('/oauth2callback', async (req, res) => {
-  const { code } = req.query;
+  const { code, state } = req.query;
+  if (!pendingState || !state || state !== pendingState) {
+    pendingState = null;
+    return res.status(403).send('Invalid or missing state parameter.');
+  }
+  pendingState = null;
   const oauth2Client = getOAuth2Client();
   try {
     const { tokens } = await oauth2Client.getToken(code);
     saveTokens(tokens);
     res.send('<script>window.close();</script><p>Authorized! You can close this tab.</p>');
   } catch (err) {
-    res.status(500).send('OAuth error: ' + err.message);
+    res.status(500).send('OAuth error.');
   }
 });
 

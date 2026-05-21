@@ -15,4 +15,4 @@ app.use('/api/ideas', require('./routes/ideas'));
 app.get('/api/health', (_, res) => res.json({ ok: true }));
 
 const PORT = 3001;
-app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
+app.listen(PORT, '127.0.0.1', () => console.log(`Backend running on http://localhost:${PORT}`));
