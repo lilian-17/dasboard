@@ -1,24 +1,73 @@
+/* ── Layout ─────────────────────────────────────── */
+.calendar-layout {
+  display: flex;
+  gap: 20px;
+  height: calc(100vh - 96px);
+  overflow: hidden;
+}
+
+.calendar-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.calendar-sidebar {
+  width: 216px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+}
+
+/* ── Page header ─────────────────────────────────── */
+.cal-title-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.week-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.week-nav-btn {
+  padding: 4px 8px;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.week-label {
+  font-size: 13px;
+  color: var(--text-2);
+  min-width: 164px;
+  text-align: center;
+  padding: 0 4px;
+}
+
+/* ── Connect card ────────────────────────────────── */
 .connect-card {
   display: flex;
   align-items: center;
   gap: 20px;
-  max-width: 500px;
+  max-width: 480px;
 }
 
 .connect-icon {
-  font-size: 36px;
-  opacity: 0.4;
+  font-size: 32px;
+  opacity: 0.35;
   flex-shrink: 0;
-}
-
-.connect-text {
-  flex: 1;
 }
 
 .connect-text strong {
   display: block;
-  font-size: 15px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  margin-bottom: 3px;
 }
 
 .connect-text p {
@@ -26,65 +75,350 @@
   font-size: 13px;
 }
 
-.event-group {
-  margin-bottom: 24px;
+/* ── Week grid container ─────────────────────────── */
+.week-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--bg-1);
 }
 
-.event-group-label {
+/* ── Week header ─────────────────────────────────── */
+.week-header {
+  display: grid;
+  grid-template-columns: 48px repeat(7, 1fr);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  background: var(--bg-1);
+}
+
+.week-time-gutter {
+  border-right: 1px solid var(--border);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 4px 6px 4px 0;
+}
+
+.week-day-header {
+  padding: 8px 4px 6px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.week-day-header.weekend { background: var(--bg); }
+.week-day-header.today   { background: var(--accent-dim); }
+
+.week-day-name {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-3);
+}
+
+.week-day-num {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-2);
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.week-day-num.today-circle {
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* ── All-day row ─────────────────────────────────── */
+.week-allday-row {
+  display: grid;
+  grid-template-columns: 48px repeat(7, 1fr);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  min-height: 26px;
+}
+
+.allday-label {
+  font-size: 9px;
+  color: var(--text-3);
+  text-align: right;
+  padding: 4px 6px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.week-allday-cell {
+  border-left: 1px solid var(--border);
+  padding: 2px 3px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.week-allday-cell.weekend { background: var(--bg); }
+
+.allday-event {
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Week body ───────────────────────────────────── */
+.week-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 48px repeat(7, 1fr);
+  overflow-y: auto;
+}
+
+.week-time-col {
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.week-hour-cell {
+  height: 48px;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-hour-label {
+  position: absolute;
+  top: -8px;
+  right: 6px;
+  font-size: 10px;
+  color: var(--text-3);
+  user-select: none;
+}
+
+.week-day-col {
+  position: relative;
+  border-left: 1px solid var(--border);
+}
+
+.week-day-col.weekend { background: var(--bg); }
+.week-day-col.today   { background: rgba(99, 102, 241, 0.025); }
+
+.week-hour-slot {
+  height: 48px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* ── Event blocks ────────────────────────────────── */
+.event-block {
+  position: absolute;
+  left: 2px;
+  right: 2px;
+  background: rgba(99, 102, 241, 0.18);
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 4px;
+  overflow: hidden;
+  cursor: default;
+  z-index: 1;
+  transition: filter 0.1s;
+}
+
+.event-block:hover { filter: brightness(1.25); }
+
+.event-block-title {
   font-size: 11px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.event-block-time {
+  font-size: 10px;
+  color: var(--text-2);
+  line-height: 1.2;
+}
+
+/* ── Current time indicator ─────────────────────── */
+.now-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--red);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.now-line::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  top: -4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+/* ── Mini month ──────────────────────────────────── */
+.mini-month {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 12px;
+}
+
+.mini-month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.mini-month-header span {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+.mini-month-header button {
+  background: none;
+  border: none;
+  color: var(--text-3);
+  font-size: 16px;
+  padding: 0 4px;
+  cursor: pointer;
+  line-height: 1;
+  border-radius: var(--radius);
+  transition: color 0.1s, background 0.1s;
+}
+
+.mini-month-header button:hover {
+  color: var(--text);
+  background: var(--bg-3);
+}
+
+.mini-month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 1px;
+  text-align: center;
+}
+
+.mini-day-label {
+  font-size: 9px;
+  color: var(--text-3);
+  padding: 3px 0;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-3);
-  margin-bottom: 8px;
-  padding-left: 2px;
+  letter-spacing: 0.04em;
 }
 
-.events-list {
+.mini-day {
+  width: 100%;
+  aspect-ratio: 1;
+  font-size: 11px;
+  color: var(--text-2);
+  background: none;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.1s, color 0.1s;
+  padding: 0;
+}
+
+.mini-day:hover {
+  background: var(--bg-3);
+  color: var(--text);
+}
+
+.mini-day.out-of-month {
+  color: var(--text-3);
+  opacity: 0.35;
+}
+
+.mini-day.in-week {
+  background: var(--accent-dim);
+  color: var(--text);
+  border-radius: 2px;
+}
+
+.mini-day.is-today {
+  background: var(--accent) !important;
+  color: #fff !important;
+  border-radius: 50% !important;
+  font-weight: 600;
+}
+
+/* ── Day summary ─────────────────────────────────── */
+.day-summary {
+  flex: 1;
+}
+
+.day-summary-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-2);
+  text-transform: capitalize;
+  margin-bottom: 10px;
+}
+
+.day-summary-empty {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.day-summary-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.event-card {
+.day-summary-item {
   display: flex;
-  gap: 0;
-  padding: 0;
-  overflow: hidden;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.event-bar {
-  width: 3px;
+.day-summary-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
   background: var(--accent);
   flex-shrink: 0;
-}
-
-.event-content {
-  padding: 14px 16px;
-  flex: 1;
-  min-width: 0;
-}
-
-.event-title {
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 4px;
-}
-
-.event-time {
-  font-size: 12px;
-  color: var(--text-2);
-}
-
-.event-loc {
-  font-size: 12px;
-  color: var(--text-3);
   margin-top: 4px;
 }
 
-.event-desc {
+.day-summary-name {
   font-size: 12px;
+  color: var(--text);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.day-summary-time {
+  font-size: 11px;
   color: var(--text-3);
-  margin-top: 6px;
-  line-height: 1.4;
 }
