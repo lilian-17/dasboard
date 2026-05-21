@@ -62,6 +62,12 @@ db.exec(`
     tag TEXT DEFAULT 'general',
     created_at TEXT DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS photos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  );
 `);
 
 // Migrations (safe to re-run — ALTER TABLE fails silently if column exists)
