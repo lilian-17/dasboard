@@ -26,6 +26,7 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
   const [photos, setPhotos] = useState([]);
   const [deleting, setDeleting] = useState(null);
   const [spotifyStatus, setSpotifyStatus] = useState(null);
+  const [connecting, setConnecting] = useState(false);
 
   useEffect(() => {
     fetch('/api/photos')
@@ -62,23 +63,30 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
       const res = await fetch('/api/spotify/auth');
       const { url } = await res.json();
       window.open(url, '_blank', 'width=500,height=700');
+      setConnecting(true);
       const poll = setInterval(async () => {
         try {
           const r = await fetch('/api/spotify/status');
           const d = await r.json();
           if (d.connected) {
             clearInterval(poll);
+            setConnecting(false);
             setSpotifyStatus(true);
           }
         } catch {}
       }, 2000);
-      setTimeout(() => clearInterval(poll), 5 * 60 * 1000);
+      setTimeout(() => {
+        clearInterval(poll);
+        setConnecting(false);
+      }, 5 * 60 * 1000);
     } catch {}
   }
 
   async function handleSpotifyDisconnect() {
-    await fetch('/api/spotify/disconnect', { method: 'DELETE' });
-    setSpotifyStatus(false);
+    try {
+      const res = await fetch('/api/spotify/disconnect', { method: 'DELETE' });
+      if (res.ok) setSpotifyStatus(false);
+    } catch {}
   }
 
   return (
@@ -174,8 +182,8 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
             <span className="settings-status">Chargement…</span>
           )}
           {spotifyStatus === false && (
-            <button className="spotify-connect-btn" onClick={handleSpotifyConnect}>
-              Connecter Spotify
+            <button className="spotify-connect-btn" onClick={handleSpotifyConnect} disabled={connecting}>
+              {connecting ? 'Connexion…' : 'Connecter Spotify'}
             </button>
           )}
           {spotifyStatus === true && (

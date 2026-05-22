@@ -193,3 +193,19 @@
 .settings-btn-danger:hover {
   background: rgba(239, 68, 68, 0.1);
 }
+
+.spotify-connect-btn {
+  background: #1DB954;
+  color: #000;
+  border: none;
+  border-radius: 99px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.spotify-connect-btn:hover {
+  background: #1ed760;
+}
