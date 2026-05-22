@@ -492,3 +492,162 @@
   color: var(--text);
   padding-bottom: 3px;
 }
+
+/* Spotify Widget */
+.spotify-widget {
+  border-radius: var(--radius-lg);
+  padding: 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  margin-top: 12px;
+}
+
+.spotify-logo {
+  color: #1DB954;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  flex-shrink: 0;
+}
+
+.spotify-playing {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.spotify-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spotify-art {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.spotify-art-fallback {
+  background: linear-gradient(135deg, #1DB954, #17a349);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.spotify-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotify-track {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.spotify-artist {
+  font-size: 11px;
+  color: var(--text-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+}
+
+.spotify-bar-wrap {
+  height: 3px;
+  background: var(--border);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.spotify-bar-fill {
+  height: 100%;
+  background: #1DB954;
+  border-radius: 99px;
+  transition: width .5s linear;
+}
+
+.spotify-time-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-3);
+  margin-top: 3px;
+}
+
+.spotify-idle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.spotify-idle-art {
+  width: 48px;
+  height: 48px;
+  border-radius: 6px;
+  background: var(--bg-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--text-3);
+}
+
+.spotify-idle-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.spotify-idle-line {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--border);
+  margin-bottom: 6px;
+}
+
+.spotify-idle-line.short {
+  width: 55%;
+}
+
+.spotify-idle-text {
+  font-size: 11px;
+  color: var(--text-3);
+}
+
+.spotify-connect {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 12px;
+}
+
+.spotify-connect-text {
+  font-size: 11px;
+  color: var(--text-2);
+  text-align: center;
+}
+
+.spotify-connect-btn {
+  background: #1DB954;
+  color: #000;
+  border: none;
+  border-radius: 99px;
+  padding: 7px 14px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.spotify-connect-btn:hover {
+  background: #1ed760;
+}
