@@ -187,6 +187,11 @@ function PhotoWidget() {
   );
 }
 
+function fmtMs(ms) {
+  const s = Math.floor(ms / 1000);
+  return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+}
+
 function DigitalClock() {
   const [time, setTime] = useState(() => new Date());
 
@@ -255,17 +260,12 @@ function SpotifyWidget() {
     } catch {}
   }
 
-  function fmtMs(ms) {
-    const s = Math.floor(ms / 1000);
-    return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-  }
-
   if (status === false) {
     return (
       <div className="spotify-widget spotify-connect">
         <span className="spotify-logo">SPOTIFY</span>
         <span className="spotify-connect-text">Connecte ton compte pour voir ce qui joue</span>
-        <button className="spotify-connect-btn" onClick={handleConnect}>
+        <button className="spotify-connect-btn" onClick={handleConnect} aria-label="Connecter le compte Spotify">
           Connecter Spotify
         </button>
       </div>
@@ -298,10 +298,15 @@ function SpotifyWidget() {
   return (
     <div className="spotify-widget spotify-playing">
       <div className="spotify-top">
-        {track.art
-          ? <img className="spotify-art" src={track.art} alt="" />
-          : <div className="spotify-art spotify-art-fallback">🎵</div>
-        }
+        <div className="spotify-art-wrap">
+          {track.art
+            ? <img className="spotify-art" src={track.art} alt="" />
+            : <div className="spotify-art spotify-art-fallback">🎵</div>
+          }
+          {!track.is_playing && (
+            <div className="spotify-paused-badge">⏸</div>
+          )}
+        </div>
         <div className="spotify-info">
           <div className="spotify-track">{track.track}</div>
           <div className="spotify-artist">{track.artist}</div>

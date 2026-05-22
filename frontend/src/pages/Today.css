@@ -651,3 +651,19 @@
 .spotify-connect-btn:hover {
   background: #1ed760;
 }
+
+.spotify-art-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.spotify-paused-badge {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 6px;
+  font-size: 16px;
+}
