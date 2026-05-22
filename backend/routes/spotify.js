@@ -41,6 +41,7 @@ async function getValidToken() {
   const tokens = getStoredTokens();
   if (!tokens || !tokens.access_token) return null;
   if (tokens.expiry_date && Date.now() > tokens.expiry_date - 60000) {
+    if (!tokens.refresh_token) return null;
     const refreshed = await refreshAccessToken(tokens.refresh_token);
     saveTokens(refreshed);
     return refreshed.access_token;
@@ -61,7 +62,11 @@ router.get('/auth', (req, res) => {
 });
 
 router.get('/callback', async (req, res) => {
-  const { code, state } = req.query;
+  const { code, state, error } = req.query;
+  if (error) {
+    pendingState = null;
+    return res.status(400).send(`Spotify auth denied: ${error}`);
+  }
   if (!pendingState || !state || state !== pendingState) {
     pendingState = null;
     return res.status(403).send('Invalid state parameter.');
@@ -110,9 +115,13 @@ router.get('/current', async (req, res) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (spotRes.status === 204 || spotRes.status === 404) return res.json(null);
+    if (spotRes.status === 401) {
+      db.prepare('DELETE FROM spotify_tokens WHERE id = 1').run();
+      return res.status(401).json({ error: 'token_expired' });
+    }
     if (!spotRes.ok) return res.status(spotRes.status).json({ error: 'Spotify API error' });
     const data = await spotRes.json();
-    if (!data || !data.item) return res.json(null);
+    if (!data || !data.item || data.item.type !== 'track') return res.json(null);
     res.json({
       track: data.item.name,
       artist: data.item.artists.map(a => a.name).join(', '),
