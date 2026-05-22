@@ -68,6 +68,13 @@ db.exec(`
     filename TEXT NOT NULL,
     created_at TEXT NOT NULL DEFAULT (datetime('now'))
   );
+
+  CREATE TABLE IF NOT EXISTS spotify_tokens (
+    id INTEGER PRIMARY KEY CHECK(id = 1),
+    access_token TEXT,
+    refresh_token TEXT,
+    expiry_date INTEGER
+  );
 `);
 
 // Migrations (safe to re-run — ALTER TABLE fails silently if column exists)
