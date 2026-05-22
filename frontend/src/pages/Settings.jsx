@@ -25,12 +25,20 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
   );
   const [photos, setPhotos] = useState([]);
   const [deleting, setDeleting] = useState(null);
+  const [spotifyStatus, setSpotifyStatus] = useState(null);
 
   useEffect(() => {
     fetch('/api/photos')
       .then(r => r.json())
       .then(setPhotos)
       .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    fetch('/api/spotify/status')
+      .then(r => r.json())
+      .then(d => setSpotifyStatus(d.connected))
+      .catch(() => setSpotifyStatus(false));
   }, []);
 
   function handleInterval(value) {
@@ -47,6 +55,30 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
     } finally {
       setDeleting(null);
     }
+  }
+
+  async function handleSpotifyConnect() {
+    try {
+      const res = await fetch('/api/spotify/auth');
+      const { url } = await res.json();
+      window.open(url, '_blank', 'width=500,height=700');
+      const poll = setInterval(async () => {
+        try {
+          const r = await fetch('/api/spotify/status');
+          const d = await r.json();
+          if (d.connected) {
+            clearInterval(poll);
+            setSpotifyStatus(true);
+          }
+        } catch {}
+      }, 2000);
+      setTimeout(() => clearInterval(poll), 5 * 60 * 1000);
+    } catch {}
+  }
+
+  async function handleSpotifyDisconnect() {
+    await fetch('/api/spotify/disconnect', { method: 'DELETE' });
+    setSpotifyStatus(false);
   }
 
   return (
@@ -132,6 +164,26 @@ export default function Settings({ theme, setTheme, accent, setAccent }) {
             ))}
           </div>
         )}
+      </div>
+
+      <div className="settings-section card" style={{ marginTop: 16 }}>
+        <h2 className="settings-section-title">Spotify</h2>
+        <div className="settings-row">
+          <span className="settings-label">Compte connecté</span>
+          {spotifyStatus === null && (
+            <span className="settings-status">Chargement…</span>
+          )}
+          {spotifyStatus === false && (
+            <button className="spotify-connect-btn" onClick={handleSpotifyConnect}>
+              Connecter Spotify
+            </button>
+          )}
+          {spotifyStatus === true && (
+            <button className="settings-btn-danger" onClick={handleSpotifyDisconnect}>
+              Déconnecter
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );

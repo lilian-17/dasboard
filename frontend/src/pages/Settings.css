@@ -172,3 +172,24 @@
 .gallery-delete:hover {
   background: var(--red);
 }
+
+.settings-status {
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+.settings-btn-danger {
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--red);
+  background: transparent;
+  border: 1px solid var(--red);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.settings-btn-danger:hover {
+  background: rgba(239, 68, 68, 0.1);
+}
