@@ -54,7 +54,7 @@ router.get('/auth', (req, res) => {
   const params = new URLSearchParams({
     client_id: process.env.SPOTIFY_CLIENT_ID,
     response_type: 'code',
-    redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3001/api/spotify/callback',
+    redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://127.0.0.1:3001/api/spotify/callback',
     scope: 'user-read-currently-playing',
     state: pendingState,
   });
@@ -85,7 +85,7 @@ router.get('/callback', async (req, res) => {
       body: new URLSearchParams({
         grant_type: 'authorization_code',
         code,
-        redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://localhost:3001/api/spotify/callback',
+        redirect_uri: process.env.SPOTIFY_REDIRECT_URI || 'http://127.0.0.1:3001/api/spotify/callback',
       }),
     });
     if (!tokenRes.ok) throw new Error('Token exchange failed');
