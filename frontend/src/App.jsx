@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom';
 import Today from './pages/Today';
 import Habits from './pages/Habits';
@@ -6,6 +6,7 @@ import Expenses from './pages/Expenses';
 import Todos from './pages/Todos';
 import Calendar from './pages/Calendar';
 import Ideas from './pages/Ideas';
+import Settings from './pages/Settings';
 import './App.css';
 
 const NAV = [
@@ -15,10 +16,31 @@ const NAV = [
   { to: '/todos', label: 'Tâches', icon: '◻' },
   { to: '/calendar', label: 'Calendrier', icon: '◷' },
   { to: '/ideas', label: 'Idées', icon: '◇' },
+  { to: '/settings', label: 'Paramètres', icon: '◉' },
 ];
+
+function hexToRgb(hex) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `${r},${g},${b}`;
+}
 
 export default function App() {
   const [collapsed, setCollapsed] = useState(() => localStorage.getItem('nav-collapsed') === 'true');
+  const [theme, setTheme] = useState(() => localStorage.getItem('theme') || 'dark');
+  const [accent, setAccent] = useState(() => localStorage.getItem('accent') || '#6366f1');
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--accent', accent);
+    document.documentElement.style.setProperty('--accent-dim', `rgba(${hexToRgb(accent)},0.15)`);
+    localStorage.setItem('accent', accent);
+  }, [accent]);
 
   return (
     <BrowserRouter>
@@ -62,6 +84,7 @@ export default function App() {
             <Route path="/todos" element={<Todos />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/ideas" element={<Ideas />} />
+            <Route path="/settings" element={<Settings theme={theme} setTheme={setTheme} accent={accent} setAccent={setAccent} />} />
           </Routes>
         </main>
       </div>

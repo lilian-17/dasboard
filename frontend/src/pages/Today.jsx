@@ -31,9 +31,20 @@ function PhotoWidget() {
   const [index, setIndex] = useState(0);
   const [menu, setMenu] = useState(null);
   const [error, setError] = useState(null);
+  const [slideInterval, setSlideInterval] = useState(
+    () => parseInt(localStorage.getItem('photo-interval') || '120000')
+  );
   const fileInputRef = useRef(null);
   const intervalRef = useRef(null);
   const errorTimerRef = useRef(null);
+
+  useEffect(() => {
+    const handler = () => setSlideInterval(
+      parseInt(localStorage.getItem('photo-interval') || '120000')
+    );
+    window.addEventListener('photo-interval-change', handler);
+    return () => window.removeEventListener('photo-interval-change', handler);
+  }, []);
 
   const loadPhotos = useCallback(async () => {
     try {
@@ -52,10 +63,10 @@ function PhotoWidget() {
     if (photos.length > 1) {
       intervalRef.current = setInterval(() => {
         setIndex(i => (i + 1) % photos.length);
-      }, 120000);
+      }, slideInterval);
     }
     return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
-  }, [photos]);
+  }, [photos, slideInterval]);
 
   useEffect(() => {
     if (!menu) return;
@@ -132,7 +143,11 @@ function PhotoWidget() {
             />
           )}
           {photos.length > 1 && (
-            <span className="photo-widget-counter">{index + 1} / {photos.length}</span>
+            <button
+              className="photo-widget-next"
+              onClick={e => { e.stopPropagation(); setIndex(i => (i + 1) % photos.length); }}
+              aria-label="Photo suivante"
+            >›</button>
           )}
           {error && <div className="photo-widget-error">{error}</div>}
         </div>
@@ -182,12 +197,14 @@ function DigitalClock() {
 
   const h = String(time.getHours()).padStart(2, '0');
   const m = String(time.getMinutes()).padStart(2, '0');
-  const s = String(time.getSeconds()).padStart(2, '0');
 
   return (
     <div className="digital-clock">
-      <span className="digital-hm">{h}:{m}</span>
-      <span className="digital-sec">{s}</span>
+      <span className="digital-digit">{h[0]}</span>
+      <span className="digital-digit">{h[1]}</span>
+      <span className="digital-colon">:</span>
+      <span className="digital-digit">{m[0]}</span>
+      <span className="digital-digit">{m[1]}</span>
     </div>
   );
 }
@@ -324,6 +341,7 @@ const SHORTCUTS = [
           <h1 className="page-title">Aujourd'hui</h1>
           <p className="today-date">{dateLabel}</p>
         </div>
+        <DigitalClock />
         <div className="today-stats">
           <div className="stat-pill">
             <span className="stat-num">{todayTasks.length}</span>
@@ -476,7 +494,6 @@ const SHORTCUTS = [
           ))}
         </div>
         <PhotoWidget />
-        <DigitalClock />
       </aside>
     </div>
   );

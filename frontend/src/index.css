@@ -19,6 +19,18 @@
   --radius-lg: 12px;
 }
 
+:root[data-theme="light"] {
+  --bg: #f5f5f5;
+  --bg-1: #ffffff;
+  --bg-2: #efefef;
+  --bg-3: #e4e4e4;
+  --border: #e0e0e0;
+  --border-2: #cccccc;
+  --text: #111111;
+  --text-2: #555555;
+  --text-3: #999999;
+}
+
 html, body, #root {
   height: 100%;
   background: var(--bg);
