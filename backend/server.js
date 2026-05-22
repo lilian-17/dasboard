@@ -10,6 +10,7 @@ app.use('/api/habits', require('./routes/habits'));
 app.use('/api/expenses', require('./routes/expenses'));
 app.use('/api/todos', require('./routes/todos'));
 app.use('/api/calendar', require('./routes/calendar'));
+app.use('/api/spotify', require('./routes/spotify'));
 app.use('/api/ideas', require('./routes/ideas'));
 app.use('/api/photos', require('./routes/photos'));
 
