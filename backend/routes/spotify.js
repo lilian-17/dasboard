@@ -65,7 +65,7 @@ router.get('/callback', async (req, res) => {
   const { code, state, error } = req.query;
   if (error) {
     pendingState = null;
-    return res.status(400).send(`Spotify auth denied: ${error}`);
+    return res.status(400).json({ error: `Spotify auth denied: ${error}` });
   }
   if (!pendingState || !state || state !== pendingState) {
     pendingState = null;

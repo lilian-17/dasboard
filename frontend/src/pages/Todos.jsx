@@ -1,9 +1,23 @@
 import { useState, useEffect, useCallback } from 'react';
 import { api } from '../lib/api';
-import { format, isPast, parseISO } from 'date-fns';
+import { format, isPast, parseISO, addDays } from 'date-fns';
 import './Todos.css';
 
+function todayStr() { return format(new Date(), 'yyyy-MM-dd'); }
+function tomorrowStr() { return format(addDays(new Date(), 1), 'yyyy-MM-dd'); }
+
+function DateChips({ value, onChange }) {
+  return (
+    <div className="date-chips">
+      <button type="button" className={`date-chip${value === todayStr() ? ' active' : ''}`} onClick={() => onChange(value === todayStr() ? '' : todayStr())}>Aujourd'hui</button>
+      <button type="button" className={`date-chip${value === tomorrowStr() ? ' active' : ''}`} onClick={() => onChange(value === tomorrowStr() ? '' : tomorrowStr())}>Demain</button>
+    </div>
+  );
+}
+
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
+
+const PRIORITY_LABELS = { low: 'Basse', medium: 'Moyenne', high: 'Haute' };
 
 export default function Todos() {
   const [todos, setTodos] = useState([]);
@@ -62,39 +76,44 @@ export default function Todos() {
     <div>
       <div className="page-header">
         <div className="title-group">
-          <h1 className="page-title">Tasks</h1>
+          <h1 className="page-title">Tâches</h1>
           {activeCount > 0 && <span className="count-badge">{activeCount}</span>}
         </div>
-        <button className="btn btn-primary" onClick={() => setShowForm(s => !s)}>+ New task</button>
+        <button className="btn btn-primary" onClick={() => setShowForm(s => !s)}>+ Nouvelle tâche</button>
       </div>
 
       {showForm && (
         <form className="card todo-form" onSubmit={addTodo}>
-          <input className="input big-input" placeholder="Task title..." value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} autoFocus />
+          <input className="input big-input" placeholder="Titre de la tâche..." value={form.title} onChange={e => setForm(f => ({ ...f, title: e.target.value }))} autoFocus />
           <div className="form-row">
             <select className="input" value={form.priority} onChange={e => setForm(f => ({ ...f, priority: e.target.value }))}>
-              <option value="low">Low priority</option>
-              <option value="medium">Medium priority</option>
-              <option value="high">High priority</option>
+              <option value="low">Priorité basse</option>
+              <option value="medium">Priorité moyenne</option>
+              <option value="high">Priorité haute</option>
             </select>
+            <DateChips value={form.due_date} onChange={v => setForm(f => ({ ...f, due_date: v }))} />
             <input className="input" type="date" value={form.due_date} onChange={e => setForm(f => ({ ...f, due_date: e.target.value }))} />
-            <button className="btn btn-primary" type="submit">Add</button>
-            <button className="btn btn-ghost" type="button" onClick={() => setShowForm(false)}>Cancel</button>
+            <button className="btn btn-primary" type="submit">Ajouter</button>
+            <button className="btn btn-ghost" type="button" onClick={() => setShowForm(false)}>Annuler</button>
           </div>
         </form>
       )}
 
       <div className="filter-tabs">
-        {['active','all','done'].map(f => (
-          <button key={f} className={`filter-tab${filter === f ? ' active' : ''}`} onClick={() => setFilter(f)}>
-            {f.charAt(0).toUpperCase() + f.slice(1)}
+        {[
+          { value: 'active', label: 'Actives' },
+          { value: 'all',    label: 'Toutes' },
+          { value: 'done',   label: 'Terminées' },
+        ].map(({ value, label }) => (
+          <button key={value} className={`filter-tab${filter === value ? ' active' : ''}`} onClick={() => setFilter(value)}>
+            {label}
           </button>
         ))}
       </div>
 
       {sorted.length === 0 ? (
         <div className="empty-state">
-          {filter === 'active' ? 'All caught up! No active tasks.' : 'Nothing here.'}
+          {filter === 'active' ? 'Tout est à jour ! Aucune tâche active.' : 'Rien ici.'}
         </div>
       ) : (
         <div className="todos-list">
@@ -106,13 +125,14 @@ export default function Todos() {
                   <input className="input big-input" value={editForm.title} onChange={e => setEditForm(f => ({ ...f, title: e.target.value }))} autoFocus />
                   <div className="form-row">
                     <select className="input" value={editForm.priority} onChange={e => setEditForm(f => ({ ...f, priority: e.target.value }))}>
-                      <option value="low">Low</option>
-                      <option value="medium">Medium</option>
-                      <option value="high">High</option>
+                      <option value="low">Basse</option>
+                      <option value="medium">Moyenne</option>
+                      <option value="high">Haute</option>
                     </select>
+                    <DateChips value={editForm.due_date || ''} onChange={v => setEditForm(f => ({ ...f, due_date: v }))} />
                     <input className="input" type="date" value={editForm.due_date || ''} onChange={e => setEditForm(f => ({ ...f, due_date: e.target.value }))} />
-                    <button className="btn btn-primary" onClick={() => saveEdit(todo.id)}>Save</button>
-                    <button className="btn btn-ghost" onClick={() => setEditId(null)}>Cancel</button>
+                    <button className="btn btn-primary" onClick={() => saveEdit(todo.id)}>Sauvegarder</button>
+                    <button className="btn btn-ghost" onClick={() => setEditId(null)}>Annuler</button>
                   </div>
                 </div>
               );
@@ -125,7 +145,7 @@ export default function Todos() {
                 <div className="todo-body" onClick={() => { setEditId(todo.id); setEditForm({ title: todo.title, priority: todo.priority, due_date: todo.due_date || '' }); }}>
                   <span className="todo-title">{todo.title}</span>
                   <div className="todo-meta">
-                    <span className={`badge badge-${todo.priority}`}>{todo.priority}</span>
+                    <span className={`badge badge-${todo.priority}`}>{PRIORITY_LABELS[todo.priority]}</span>
                     {todo.due_date && (
                       <span className={`due-date${overdue ? ' overdue' : ''}`}>
                         {overdue ? '⚠ ' : ''}{todo.due_date}
